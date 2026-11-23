@@ -47,7 +47,7 @@ Set these in `apps/web/.env` locally, and in Vercel later:
 - `SMTP_USER` / `SMTP_PASS` if you want staff welcome and password-reset emails
 - `CRON_SECRET` to protect `/api/cron/auto-vacancy`
 
-For the ESP32, copy `IoT_ESP32/ESP32_Occupancy/secrets.h.example` to `secrets.h` and fill in Wi-Fi, server URL, and the device key.
+For the ESP32, copy `IoT_ESP32/ESP32_Occupancy/secrets.h.example` to `secrets.h` and fill in Wi-Fi, the Vercel **production** HTTPS URL (`https://<your-vercel-production-domain>/api/iot/occupancy`), and the device key (`HOTEL_ESP32_SECRET`). Do not use preview URLs; Deployment Protection will block the board. A Protection Bypass for Automation secret is optional and only for previews (`VERCEL_PROTECTION_BYPASS`, sent as `x-vercel-protection-bypass`). For local testing, use `IoT_ESP32/ESP32_Occupancy_HTTP` instead.
 
 ## Payments
 

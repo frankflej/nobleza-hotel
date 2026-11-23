@@ -150,6 +150,9 @@ importers:
       '@trpc/server':
         specifier: 'catalog:'
         version: 11.29.7(next@16.4.6(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(typescript@5.9.3)
+      better-auth:
+        specifier: 'catalog:'
+        version: 1.7.27(@prisma/client@6.19.3(prisma@6.19.3(typescript@5.9.3))(typescript@5.9.3))(next@16.4.6(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(prisma@6.19.3(typescript@5.9.3))(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       dotenv:
         specifier: 'catalog:'
         version: 17.4.2

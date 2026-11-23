@@ -2,8 +2,12 @@
   "name": "@NOBLEZA/api",
   "type": "module",
   "exports": {
-    ".": { "default": "./src/index.ts" },
-    "./*": { "default": "./src/*.ts" }
+    ".": {
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "default": "./src/*.ts"
+    }
   },
   "scripts": {},
   "dependencies": {
@@ -14,7 +18,8 @@
     "@trpc/server": "catalog:",
     "dotenv": "catalog:",
     "next": "catalog:",
-    "zod": "catalog:"
+    "zod": "catalog:",
+    "better-auth": "catalog:"
   },
   "devDependencies": {
     "@NOBLEZA/config": "workspace:*",
