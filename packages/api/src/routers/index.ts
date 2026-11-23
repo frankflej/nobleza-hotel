@@ -4,6 +4,13 @@ import { bookingsRouter } from "./bookings";
 import { userRouter } from "./user";
 import { feedbackRouter } from "./feedback";
 import { notificationsRouter } from "./notifications";
+import { guestsRouter } from "./guests";
+import { housekeepingRouter } from "./housekeeping";
+import { analyticsRouter } from "./analytics";
+import { paymentsRouter } from "./payments";
+import { reportsRouter } from "./reports";
+import { adminRouter } from "./admin";
+import { iotRouter } from "./iot";
 
 export const appRouter = router({
   healthCheck: publicProcedure.query(() => "OK"),
@@ -12,6 +19,13 @@ export const appRouter = router({
   user: userRouter,
   feedback: feedbackRouter,
   notifications: notificationsRouter,
+  guests: guestsRouter,
+  housekeeping: housekeepingRouter,
+  analytics: analyticsRouter,
+  payments: paymentsRouter,
+  reports: reportsRouter,
+  admin: adminRouter,
+  iot: iotRouter,
 });
 
 export type AppRouter = typeof appRouter;

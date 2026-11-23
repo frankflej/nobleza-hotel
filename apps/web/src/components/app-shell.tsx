@@ -3,9 +3,21 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { authClient, useSession } from "@/lib/auth-client";
-import { dashboardPath } from "@/lib/roles";
+import { dashboardPath, type HotelRole } from "@/lib/roles";
 
-export function AppShell({ title, children }: { title: string; children: React.ReactNode }) {
+export function AppShell({
+  title,
+  allow,
+  wide,
+  nav,
+  children,
+}: {
+  title: string;
+  allow?: HotelRole[];
+  wide?: boolean;
+  nav?: React.ReactNode;
+  children: React.ReactNode;
+}) {
   const { data: session, isPending } = useSession();
   const router = useRouter();
   const user = session?.user;
@@ -23,6 +35,10 @@ export function AppShell({ title, children }: { title: string; children: React.R
     router.push("/login");
     return null;
   }
+  if (allow && !allow.includes(user.role as HotelRole)) {
+    router.replace(dashboardPath(user.role));
+    return <div className="p-8 text-hotel-blue">Redirecting to your dashboard…</div>;
+  }
 
   return (
     <div className="min-h-screen bg-hotel-cream text-hotel-blue">
@@ -39,13 +55,18 @@ export function AppShell({ title, children }: { title: string; children: React.R
           <span>
             {user.name} <span className="text-hotel-cream/60">({user.role})</span>
           </span>
-          <button type="button" onClick={handleSignOut} className="rounded border border-hotel-gold px-3 py-1 text-hotel-gold hover:bg-hotel-gold hover:text-hotel-blue-dark">
+          <button
+            type="button"
+            onClick={handleSignOut}
+            className="rounded border border-hotel-gold px-3 py-1 text-hotel-gold hover:bg-hotel-gold hover:text-hotel-blue-dark"
+          >
             Sign out
           </button>
         </div>
       </header>
-      <main className="mx-auto max-w-5xl px-6 py-10">
+      <main className={`mx-auto px-6 py-8 ${wide ? "max-w-7xl" : "max-w-5xl"}`}>
         <h1 className="font-serif text-3xl">{title}</h1>
+        {nav ? <div className="mt-4">{nav}</div> : null}
         <div className="mt-6">{children}</div>
       </main>
     </div>

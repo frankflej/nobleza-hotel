@@ -1,4 +1,8 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "nextjs",
+  "installCommand": "cd ../.. && pnpm install",
+  "buildCommand": "cd ../.. && pnpm turbo -F web build",
   "headers": [
     {
       "source": "/(.*)",
@@ -13,7 +17,7 @@
   "crons": [
     {
       "path": "/api/cron/auto-vacancy",
-      "schedule": "*/5 * * * *"
+      "schedule": "0 1 * * *"
     }
   ]
 }

@@ -6,6 +6,11 @@ import { dirname, resolve } from "path";
 import { existsSync } from "fs";
 
 function loadWebEnvOnce(): void {
+  // On Vercel the platform injects env vars. Skip local file discovery so the
+  // serverless bundle is not traced as the entire monorepo.
+  if (process.env.VERCEL || process.env.NODE_ENV === "production") {
+    return;
+  }
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = dirname(__filename);
   const cwd = process.cwd();
@@ -15,7 +20,7 @@ function loadWebEnvOnce(): void {
     resolve(__dirname, "..", "..", "..", "apps", "web", ".env"),
   ];
   for (const p of candidates) {
-    if (existsSync(p)) {
+    if (existsSync(/* turbopackIgnore: true */ p)) {
       dotenv.config({ path: p });
       return;
     }
@@ -34,7 +39,6 @@ export const env = createEnv({
     TRUSTED_ORIGINS: z.string().optional(),
     NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
     HOTEL_ESP32_SECRET: z.string().min(8),
-    AI_SERVICE_URL: z.string().url().optional(),
     SMTP_USER: z.string().optional(),
     SMTP_PASS: z.string().optional(),
     APP_URL: z.string().url().optional(),

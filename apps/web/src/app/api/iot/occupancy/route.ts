@@ -1,19 +1,11 @@
-import { createHash, timingSafeEqual } from "node:crypto";
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@NOBLEZA/db";
-import { env } from "@NOBLEZA/env/server";
+import { deviceKeyMatches } from "@/lib/device-key";
 
 export const dynamic = "force-dynamic";
 
-function keysMatch(provided: string, expected: string) {
-  const a = createHash("sha256").update(provided).digest();
-  const b = createHash("sha256").update(expected).digest();
-  return timingSafeEqual(a, b);
-}
-
 export async function POST(req: NextRequest) {
-  const deviceKey = req.headers.get("x-device-key") ?? "";
-  if (!deviceKey || !keysMatch(deviceKey, env.HOTEL_ESP32_SECRET)) {
+  if (!deviceKeyMatches(req.headers.get("x-device-key"))) {
     return NextResponse.json(
       { success: false, message: "Unauthorized. Invalid device key." },
       { status: 401 },
