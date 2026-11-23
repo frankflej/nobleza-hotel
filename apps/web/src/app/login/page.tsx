@@ -4,7 +4,7 @@ import { FormEvent, Suspense, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
-import { dashboardPath } from "@/lib/roles";
+import { dashboardPath, safeInternalPath } from "@/lib/roles";
 import { AuthShell } from "@/components/auth-shell";
 
 function LoginForm() {
@@ -31,7 +31,7 @@ function LoginForm() {
       return;
     }
     const next = params.get("next");
-    router.push(next || dashboardPath(user?.role));
+    router.push(safeInternalPath(next, dashboardPath(user?.role)));
     router.refresh();
   }
 

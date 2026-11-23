@@ -17,7 +17,7 @@ The app is branded **Nobleza Hotel**. Anything hotel-specific below is temporary
 The seed creates **79 placeholder rooms** (40 Standard at $95, 30 Deluxe at $150, 8 Suites at $280, 1 Presidential at $500). Please supply:
 
 - Real room numbers, types, capacities, and nightly rates (and currency)
-- Descriptions and amenics for each type
+- Descriptions and amenities for each type
 - Photographs (current files in `apps/web/public/rooms/` are placeholders)
 - How many rooms of each type you actually have
 
@@ -52,3 +52,8 @@ For the ESP32, copy `IoT_ESP32/ESP32_Occupancy/secrets.h.example` to `secrets.h`
 
 There is no live payment gateway. Folios are recorded as Card, Cash, Mobile Money, or Bank Transfer. Say if you want a processor later.
 
+
+
+## Vercel project (you create this)
+
+Import `frankflej/nobleza-hotel` in the Vercel dashboard. Set the Root Directory to `apps/web`, Node.js 22, and the production environment variables listed above. Do not deploy preview URLs to the ESP32. A live payment processor is still an open question; folios today only record Card, Cash, Mobile Money, or Bank Transfer.
