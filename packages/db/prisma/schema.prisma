@@ -1,7 +1,7 @@
 // Nobleza Hotel Management System
 // PostgreSQL + Prisma. Better-Auth uses User, Session, Account, Verification.
-// Hotel table column names (rooms, bookings) stay snake_case so the Python
-// AI service can query them with the existing SQL.
+// Hotel table column names (rooms, bookings) stay snake_case to match the
+// original hotel schema.
 
 generator client {
   provider = "prisma-client-js"
@@ -82,7 +82,6 @@ enum FeedbackStatus {
 enum ReportType {
   occupancy
   revenue
-  forecast
   audit
 }
 
@@ -263,20 +262,6 @@ model HousekeepingTask {
   @@index([roomId])
   @@index([status])
   @@map("housekeeping_tasks")
-}
-
-model AiPrediction {
-  id                  Int      @id @default(autoincrement())
-  predictionDate      DateTime @map("prediction_date") @db.Date
-  predictedOccupancy  Float    @map("predicted_occupancy")
-  actualOccupancy     Float?   @map("actual_occupancy")
-  revenueProjection   Float    @map("revenue_projection")
-  confidenceScore     Float    @default(0.85) @map("confidence_score")
-  factors             Json?
-  createdAt           DateTime @default(now()) @map("created_at")
-
-  @@index([predictionDate])
-  @@map("ai_predictions")
 }
 
 model Report {

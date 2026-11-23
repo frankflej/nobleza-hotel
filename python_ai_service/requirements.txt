@@ -1,8 +1,0 @@
-fastapi
-uvicorn
-scikit-learn
-pandas
-numpy
-sqlalchemy
-psycopg2-binary
-python-dotenv

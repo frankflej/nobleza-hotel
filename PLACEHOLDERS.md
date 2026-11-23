@@ -43,7 +43,6 @@ Set these in `apps/web/.env` locally, and in Vercel later:
 - `BETTER_AUTH_SECRET` (32+ random characters)
 - `BETTER_AUTH_URL` and `CORS_ORIGIN` (the public site URL)
 - `HOTEL_ESP32_SECRET`
-- `AI_SERVICE_URL` (when the Python service has a public URL)
 - `SMTP_USER` / `SMTP_PASS` if you want staff welcome and password-reset emails
 - `CRON_SECRET` to protect `/api/cron/auto-vacancy`
 
@@ -53,6 +52,3 @@ For the ESP32, copy `IoT_ESP32/ESP32_Occupancy/secrets.h.example` to `secrets.h`
 
 There is no live payment gateway. Folios are recorded as Card, Cash, Mobile Money, or Bank Transfer. Say if you want a processor later.
 
-## Python AI on Vercel
-
-The scikit-learn + pandas stack is larger than Vercel’s ~250MB unzipped Python function limit (measured ~280MB even after stripping caches). Forecasts work locally via `AI_SERVICE_URL`. Options for production will be listed after the app is built; no other host has been chosen.
