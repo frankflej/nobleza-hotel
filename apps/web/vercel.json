@@ -17,7 +17,7 @@
   "crons": [
     {
       "path": "/api/cron/auto-vacancy",
-      "schedule": "*/5 * * * *"
+      "schedule": "0 1 * * *"
     }
   ]
 }

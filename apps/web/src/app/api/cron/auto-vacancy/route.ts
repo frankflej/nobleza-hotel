@@ -16,7 +16,7 @@ function cronAuthorized(req: NextRequest) {
 
 /**
  * Marks rooms vacant when no motion has been reported for 30 minutes.
- * Vercel cron: every 5 minutes (Hobby plans only allow a daily schedule — use Pro).
+ * Vercel cron: daily at 01:00 UTC (03:00 Africa/Kigali), which fits the Hobby plan.
  * If CRON_SECRET is set, callers must send Authorization: Bearer <CRON_SECRET>.
  */
 export async function GET(req: NextRequest) {

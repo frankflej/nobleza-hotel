@@ -100,10 +100,9 @@ Do not run `pnpm db:seed` against production. Seed data is demo-only.
 
 ### Cron (auto-vacancy)
 
-`GET /api/cron/auto-vacancy` marks rooms vacant when no motion has been reported for 30 minutes. `apps/web/vercel.json` schedules it every five minutes.
+`GET /api/cron/auto-vacancy` marks rooms vacant when no motion has been reported for 30 minutes. `apps/web/vercel.json` schedules it once a day at 01:00 UTC (03:00 Africa/Kigali), which is allowed on the Vercel Hobby plan. Rooms that go quiet after that daily run stay marked occupied until the next morning.
 
 - Set `CRON_SECRET` in Vercel. The platform will send the bearer token; the route rejects other callers in production.
-- **Vercel Hobby plans only allow a daily cron.** The five-minute schedule needs a Pro plan. On Hobby the job will not run every five minutes; either upgrade, or change the schedule in `apps/web/vercel.json` to a daily expression such as `0 3 * * *` and accept that rooms may stay marked occupied until the daily run.
 
 ## ESP32 occupancy
 
