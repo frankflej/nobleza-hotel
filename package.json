@@ -20,7 +20,8 @@
     "db:migrate": "turbo -F @NOBLEZA/db db:migrate",
     "test:iot": "node scripts/test-iot-occupancy.mjs",
     "sim:iot": "node scripts/iot-simulator.mjs",
-    "test:admin-iot": "node scripts/test-admin-iot.mjs"
+    "test:admin-iot": "node scripts/test-admin-iot.mjs",
+    "test:flow": "node scripts/test-full-flow.mjs"
   },
   "devDependencies": {
     "@NOBLEZA/config": "workspace:*",
@@ -34,5 +35,8 @@
       "prisma",
       "esbuild"
     ]
+  },
+  "engines": {
+    "node": ">=22"
   }
 }

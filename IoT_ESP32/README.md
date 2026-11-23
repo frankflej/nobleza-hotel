@@ -35,7 +35,14 @@ Use `ESP32_Occupancy_HTTP/` against the Next.js app on your network, for example
 From the repo root, with the dev server running and `HOTEL_ESP32_SECRET` set in `apps/web/.env`:
 
 ```bash
-node scripts/test-iot-occupancy.mjs
+pnpm test:iot
+# or: node scripts/test-iot-occupancy.mjs
 ```
 
 The test posts the exact payload the board sends.
+
+To simulate the board locally (reads `HOTEL_ESP32_SECRET` from `apps/web/.env`):
+
+```bash
+pnpm sim:iot -- --once
+```

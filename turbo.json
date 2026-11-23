@@ -12,6 +12,7 @@
       ],
       "outputs": [
         ".next/**",
+        "!.next/cache/**",
         "dist/**"
       ],
       "env": [
