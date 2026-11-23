@@ -9,6 +9,8 @@ import { housekeepingRouter } from "./housekeeping";
 import { analyticsRouter } from "./analytics";
 import { paymentsRouter } from "./payments";
 import { reportsRouter } from "./reports";
+import { adminRouter } from "./admin";
+import { iotRouter } from "./iot";
 
 export const appRouter = router({
   healthCheck: publicProcedure.query(() => "OK"),
@@ -22,6 +24,8 @@ export const appRouter = router({
   analytics: analyticsRouter,
   payments: paymentsRouter,
   reports: reportsRouter,
+  admin: adminRouter,
+  iot: iotRouter,
 });
 
 export type AppRouter = typeof appRouter;
