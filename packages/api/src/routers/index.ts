@@ -4,6 +4,8 @@ import { bookingsRouter } from "./bookings";
 import { userRouter } from "./user";
 import { feedbackRouter } from "./feedback";
 import { notificationsRouter } from "./notifications";
+import { guestsRouter } from "./guests";
+import { housekeepingRouter } from "./housekeeping";
 
 export const appRouter = router({
   healthCheck: publicProcedure.query(() => "OK"),
@@ -12,6 +14,8 @@ export const appRouter = router({
   user: userRouter,
   feedback: feedbackRouter,
   notifications: notificationsRouter,
+  guests: guestsRouter,
+  housekeeping: housekeepingRouter,
 });
 
 export type AppRouter = typeof appRouter;

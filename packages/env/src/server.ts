@@ -34,7 +34,6 @@ export const env = createEnv({
     TRUSTED_ORIGINS: z.string().optional(),
     NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
     HOTEL_ESP32_SECRET: z.string().min(8),
-    AI_SERVICE_URL: z.string().url().optional(),
     SMTP_USER: z.string().optional(),
     SMTP_PASS: z.string().optional(),
     APP_URL: z.string().url().optional(),

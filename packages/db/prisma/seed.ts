@@ -284,38 +284,9 @@ async function main() {
   }
   console.log("Housekeeping tasks seeded\n");
 
-  for (let daysAgo = 30; daysAgo >= 0; daysAgo--) {
-    const predDate = new Date(now);
-    predDate.setDate(predDate.getDate() - daysAgo);
-    predDate.setHours(0, 0, 0, 0);
-    const dayOfWeek = predDate.getDay();
-    const isWeekend = dayOfWeek === 5 || dayOfWeek === 6;
-    let baseOccupancy = 45 + Math.random() * 20;
-    if (isWeekend) baseOccupancy += 15;
-    baseOccupancy = Math.min(98, baseOccupancy);
-    const actualOccupancy = baseOccupancy + (Math.random() - 0.5) * 10;
-    const avgRoomPrice = 180;
-    const revenueProjection = (baseOccupancy / 100) * allRooms.length * avgRoomPrice;
-    await db.aiPrediction.create({
-      data: {
-        predictionDate: predDate,
-        predictedOccupancy: parseFloat(baseOccupancy.toFixed(1)),
-        actualOccupancy:
-          daysAgo > 0 ? parseFloat(Math.min(100, Math.max(0, actualOccupancy)).toFixed(1)) : null,
-        revenueProjection: parseFloat(revenueProjection.toFixed(2)),
-        confidenceScore: parseFloat((0.78 + Math.random() * 0.17).toFixed(2)),
-        factors: {
-          weekend_factor: isWeekend ? 1.15 : 1.0,
-          day_of_week: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][dayOfWeek],
-        },
-      },
-    });
-  }
-  console.log("AI predictions seeded (31 days)\n");
-
   await db.notification.createMany({
     data: [
-      { userId: manager.id, title: "AI Demand Alert", message: "Predicted occupancy is peaking next Saturday. Review suggested rates.", read: false },
+      { userId: manager.id, title: "Arrivals tomorrow", message: "Review tomorrow's check-ins and occupancy on the front desk board.", read: false },
       { userId: receptionist.id, title: "Arrivals today", message: "Review today's check-ins on the front desk board.", read: false },
       { userId: housekeeper.id, title: "Cleaning queue", message: "Priority rooms are waiting on the cleaning board.", read: false },
       { userId: guest.id, title: "Welcome to Nobleza Hotel", message: "Thank you for joining the loyalty programme.", read: true },
