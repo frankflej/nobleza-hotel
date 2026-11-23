@@ -1,0 +1,35 @@
+{
+  "name": "@NOBLEZA/db",
+  "type": "module",
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "default": "./src/*.ts"
+    }
+  },
+  "scripts": {
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate dev",
+    "db:seed": "tsx prisma/seed.ts",
+    "db:studio": "prisma studio"
+  },
+  "prisma": {
+    "schema": "prisma/schema.prisma",
+    "seed": "tsx prisma/seed.ts"
+  },
+  "dependencies": {
+    "@NOBLEZA/env": "workspace:*",
+    "@prisma/client": "catalog:",
+    "dotenv": "catalog:",
+    "better-auth": "catalog:"
+  },
+  "devDependencies": {
+    "@NOBLEZA/config": "workspace:*",
+    "prisma": "catalog:",
+    "tsx": "^4.19.2",
+    "typescript": "catalog:"
+  }
+}

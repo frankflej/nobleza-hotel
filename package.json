@@ -1,0 +1,35 @@
+{
+  "name": "NOBLEZA",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "type": "module",
+  "packageManager": "pnpm@10.28.0",
+  "scripts": {
+    "dev": "turbo dev",
+    "dev:web": "turbo -F web dev",
+    "start": "turbo start",
+    "build": "turbo build",
+    "check-types": "turbo check-types",
+    "db:push": "turbo -F @NOBLEZA/db db:push",
+    "db:generate": "turbo -F @NOBLEZA/db db:generate",
+    "db:seed": "turbo -F @NOBLEZA/db db:seed",
+    "db:studio": "turbo -F @NOBLEZA/db db:studio",
+    "db:migrate": "turbo -F @NOBLEZA/db db:migrate"
+  },
+  "devDependencies": {
+    "@NOBLEZA/config": "workspace:*",
+    "turbo": "^2.6.3",
+    "typescript": "catalog:"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@prisma/client",
+      "@prisma/engines",
+      "prisma",
+      "esbuild"
+    ]
+  }
+}

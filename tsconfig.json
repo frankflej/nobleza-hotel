@@ -1,0 +1,3 @@
+{
+  "extends": "@NOBLEZA/config/tsconfig.base.json"
+}

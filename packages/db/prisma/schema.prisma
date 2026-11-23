@@ -1,0 +1,386 @@
+// Nobleza Hotel Management System
+// PostgreSQL + Prisma. Better-Auth uses User, Session, Account, Verification.
+// Hotel table column names (rooms, bookings) stay snake_case so the Python
+// AI service can query them with the existing SQL.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  guest
+  receptionist
+  housekeeping
+  manager
+  admin
+}
+
+enum UserStatus {
+  active
+  inactive
+}
+
+enum RoomType {
+  Standard
+  Deluxe
+  Suite
+  Presidential
+}
+
+enum RoomStatus {
+  Available
+  Occupied
+  Dirty
+  Cleaning
+  Maintenance
+}
+
+enum BookingStatus {
+  Booked
+  CheckedIn
+  CheckedOut
+  Cancelled
+}
+
+enum PaymentMethod {
+  Card
+  Cash
+  MobileMoney
+  BankTransfer
+}
+
+enum PaymentStatus {
+  Pending
+  Paid
+  Refunded
+}
+
+enum TaskStatus {
+  Pending
+  InProgress
+  Resolved
+}
+
+enum FeedbackCategory {
+  General
+  Complaint
+  Compliment
+  Suggestion
+}
+
+enum FeedbackStatus {
+  Pending
+  Reviewed
+  Resolved
+}
+
+enum ReportType {
+  occupancy
+  revenue
+  forecast
+  audit
+}
+
+enum SensorType {
+  Motion
+  Temperature
+  Light
+}
+
+enum SensorStatus {
+  Active
+  Offline
+  Maintenance
+}
+
+enum HousekeepingLogAction {
+  MarkedDirty
+  TaskCreated
+  CleaningStarted
+  CleaningCompleted
+  MarkedAvailable
+}
+
+model User {
+  id                    String     @id
+  name                  String
+  email                 String     @unique
+  emailVerified         Boolean    @default(false)
+  image                 String?
+  role                  Role       @default(guest)
+  status                UserStatus @default(active)
+  loyaltyPoints         Int        @default(0) @map("loyalty_points")
+  forcePasswordChange   Boolean    @default(false) @map("force_password_change")
+  createdAt             DateTime   @default(now()) @map("created_at")
+  updatedAt             DateTime   @updatedAt @map("updated_at")
+
+  sessions              Session[]
+  accounts              Account[]
+  bookings              Booking[]
+  assignedTasks         HousekeepingTask[] @relation("AssignedTasks")
+  reportedTasks         HousekeepingTask[] @relation("ReportedTasks")
+  notifications         Notification[]
+  auditLogs             AuditLog[]
+  reports               Report[]
+  feedback              Feedback[]
+  housekeepingLogs      HousekeepingLog[]  @relation("HousekeepingStaff")
+
+  @@map("users")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
+}
+
+model Room {
+  id                 Int        @id @default(autoincrement())
+  roomNumber         String     @unique @map("room_number")
+  type               RoomType   @default(Standard)
+  price              Float
+  capacity           Int        @default(2)
+  status             RoomStatus @default(Available)
+  description        String?
+  amenities          String?
+  imageUrl           String?    @map("image_url")
+  occupied           Boolean    @default(false)
+  lastMotionDetected DateTime?
+  occupancySource    String?    @default("PIR")
+  createdAt          DateTime   @default(now()) @map("created_at")
+  updatedAt          DateTime   @updatedAt @map("updated_at")
+
+  bookings           Booking[]
+  housekeepingTasks  HousekeepingTask[]
+  sensors            RoomSensor[]
+  occupancyLogs      OccupancyLog[]
+  housekeepingLogs   HousekeepingLog[]
+
+  @@map("rooms")
+}
+
+model Booking {
+  id              Int           @id @default(autoincrement())
+  userId          String        @map("user_id")
+  roomId          Int           @map("room_id")
+  checkInDate     DateTime      @map("check_in_date") @db.Date
+  checkOutDate    DateTime      @map("check_out_date") @db.Date
+  status          BookingStatus @default(Booked)
+  totalPrice      Float         @map("total_price")
+  loyaltyDiscount Float         @default(0) @map("loyalty_discount")
+  specialRequests String?       @map("special_requests")
+  createdAt       DateTime      @default(now()) @map("created_at")
+  updatedAt       DateTime      @updatedAt @map("updated_at")
+
+  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  room            Room          @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  payment         Payment?
+  feedback        Feedback[]
+
+  @@index([userId])
+  @@index([roomId])
+  @@index([checkInDate, checkOutDate])
+  @@map("bookings")
+}
+
+model Payment {
+  id             Int           @id @default(autoincrement())
+  bookingId      Int           @unique @map("booking_id")
+  roomCharges    Float         @map("room_charges")
+  serviceCharges Float         @default(0) @map("service_charges")
+  tax            Float         @default(0)
+  totalAmount    Float         @map("total_amount")
+  paymentMethod  PaymentMethod @default(Card) @map("payment_method")
+  status         PaymentStatus @default(Pending)
+  createdAt      DateTime      @default(now()) @map("created_at")
+
+  booking        Booking       @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+
+  @@map("payments")
+}
+
+model HousekeepingTask {
+  id          Int        @id @default(autoincrement())
+  roomId      Int        @map("room_id")
+  assignedTo  String?    @map("assigned_to")
+  reportedBy  String?    @map("reported_by")
+  description String
+  status      TaskStatus @default(Pending)
+  createdAt   DateTime   @default(now()) @map("created_at")
+  resolvedAt  DateTime?  @map("resolved_at")
+
+  room        Room       @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  assignee    User?      @relation("AssignedTasks", fields: [assignedTo], references: [id], onDelete: SetNull)
+  reporter    User?      @relation("ReportedTasks", fields: [reportedBy], references: [id], onDelete: SetNull)
+  logs        HousekeepingLog[]
+
+  @@index([roomId])
+  @@index([status])
+  @@map("housekeeping_tasks")
+}
+
+model AiPrediction {
+  id                  Int      @id @default(autoincrement())
+  predictionDate      DateTime @map("prediction_date") @db.Date
+  predictedOccupancy  Float    @map("predicted_occupancy")
+  actualOccupancy     Float?   @map("actual_occupancy")
+  revenueProjection   Float    @map("revenue_projection")
+  confidenceScore     Float    @default(0.85) @map("confidence_score")
+  factors             Json?
+  createdAt           DateTime @default(now()) @map("created_at")
+
+  @@index([predictionDate])
+  @@map("ai_predictions")
+}
+
+model Report {
+  id          Int        @id @default(autoincrement())
+  generatedBy String     @map("generated_by")
+  type        ReportType
+  data        Json
+  createdAt   DateTime   @default(now()) @map("created_at")
+
+  generator   User       @relation(fields: [generatedBy], references: [id], onDelete: Cascade)
+
+  @@map("reports")
+}
+
+model Notification {
+  id        Int      @id @default(autoincrement())
+  userId    String   @map("user_id")
+  title     String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, read])
+  @@map("notifications")
+}
+
+model AuditLog {
+  id        Int      @id @default(autoincrement())
+  userId    String?  @map("user_id")
+  action    String
+  details   String?
+  ipAddress String?  @map("ip_address")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([createdAt])
+  @@map("audit_logs")
+}
+
+model Feedback {
+  id            Int              @id @default(autoincrement())
+  userId        String           @map("user_id")
+  bookingId     Int?             @map("booking_id")
+  rating        Int              @default(5)
+  category      FeedbackCategory @default(General)
+  title         String
+  message       String
+  status        FeedbackStatus   @default(Pending)
+  staffResponse String?          @map("staff_response")
+  createdAt     DateTime         @default(now()) @map("created_at")
+  updatedAt     DateTime         @updatedAt @map("updated_at")
+
+  user          User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  booking       Booking?         @relation(fields: [bookingId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([status])
+  @@map("feedback")
+}
+
+model RoomSensor {
+  id          Int          @id @default(autoincrement())
+  roomId      Int          @map("room_id")
+  sensorType  SensorType   @map("sensor_type")
+  macAddress  String       @unique @map("mac_address")
+  status      SensorStatus @default(Active)
+  lastPing    DateTime     @default(now()) @map("last_ping")
+  createdAt   DateTime     @default(now()) @map("created_at")
+
+  room        Room         @relation(fields: [roomId], references: [id], onDelete: Cascade)
+
+  @@index([roomId])
+  @@map("room_sensors")
+}
+
+model OccupancyLog {
+  id         Int      @id @default(autoincrement())
+  roomId     Int      @map("room_id")
+  occupied   Boolean
+  detectedAt DateTime @default(now()) @map("detected_at")
+
+  room       Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
+
+  @@index([roomId, detectedAt])
+  @@map("occupancy_logs")
+}
+
+model HousekeepingLog {
+  id          Int                   @id @default(autoincrement())
+  roomId      Int                   @map("room_id")
+  taskId      Int?                  @map("task_id")
+  action      HousekeepingLogAction
+  triggeredBy String?               @map("triggered_by")
+  staffId     String?               @map("staff_id")
+  notes       String?
+  timestamp   DateTime              @default(now())
+
+  room        Room                  @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  task        HousekeepingTask?     @relation(fields: [taskId], references: [id], onDelete: SetNull)
+  staff       User?                 @relation("HousekeepingStaff", fields: [staffId], references: [id], onDelete: SetNull)
+
+  @@index([roomId, timestamp])
+  @@map("housekeeping_logs")
+}

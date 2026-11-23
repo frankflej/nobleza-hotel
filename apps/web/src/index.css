@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+@theme {
+  --color-hotel-blue: #1b365d;
+  --color-hotel-blue-light: #2c4d75;
+  --color-hotel-blue-dark: #0b1c33;
+  --color-hotel-blue-hover: #132847;
+  --color-hotel-gold: #c5a880;
+  --color-hotel-gold-light: #dfd3c3;
+  --color-hotel-gold-dark: #aa8855;
+  --color-hotel-gold-hover: #b5966d;
+  --color-hotel-accent-gold: #d4af37;
+  --color-hotel-accent-red: #962d2d;
+  --color-hotel-accent-green: #2d6a4f;
+  --color-hotel-cream: #fdfbf7;
+  --color-hotel-slate: #4a5568;
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-sans: Inter, system-ui, sans-serif;
+  --shadow-luxury: 0 4px 20px -2px rgba(27, 54, 93, 0.1), 0 2px 8px -1px rgba(197, 168, 128, 0.15);
+  --shadow-gold: 0 4px 15px -3px rgba(197, 168, 128, 0.4);
+}
+
+@layer base {
+  body {
+    @apply bg-hotel-cream text-slate-800 antialiased font-sans;
+  }
+  h1, h2, h3, h4 {
+    @apply font-serif text-hotel-blue-dark font-medium tracking-wide;
+  }
+}
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #FDFBF7; }
+::-webkit-scrollbar-thumb { background: #C5A880; border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: #AA8855; }
+
+.luxury-glass {
+  background: rgba(253, 251, 247, 0.75);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(197, 168, 128, 0.2);
+}
+.luxury-glass-dark {
+  background: rgba(11, 28, 51, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(197, 168, 128, 0.15);
+}

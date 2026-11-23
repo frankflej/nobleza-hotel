@@ -1,0 +1,23 @@
+{
+  "name": "@NOBLEZA/api",
+  "type": "module",
+  "exports": {
+    ".": { "default": "./src/index.ts" },
+    "./*": { "default": "./src/*.ts" }
+  },
+  "scripts": {},
+  "dependencies": {
+    "@NOBLEZA/auth": "workspace:*",
+    "@NOBLEZA/db": "workspace:*",
+    "@NOBLEZA/env": "workspace:*",
+    "@trpc/client": "catalog:",
+    "@trpc/server": "catalog:",
+    "dotenv": "catalog:",
+    "next": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@NOBLEZA/config": "workspace:*",
+    "typescript": "catalog:"
+  }
+}

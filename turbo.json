@@ -1,0 +1,41 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "ui": "tui",
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "outputs": [".next/**", "dist/**"],
+      "env": [
+        "DATABASE_URL",
+        "BETTER_AUTH_SECRET",
+        "BETTER_AUTH_URL",
+        "CORS_ORIGIN",
+        "TRUSTED_ORIGINS",
+        "NODE_ENV",
+        "HOTEL_ESP32_SECRET",
+        "AI_SERVICE_URL",
+        "SMTP_USER",
+        "SMTP_PASS",
+        "CRON_SECRET",
+        "APP_URL"
+      ]
+    },
+    "check-types": {
+      "dependsOn": ["^check-types"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "db:push": { "cache": false },
+    "db:generate": { "cache": false },
+    "db:seed": { "cache": false },
+    "db:studio": { "cache": false, "persistent": true },
+    "db:migrate": { "cache": false },
+    "start": {
+      "dependsOn": ["build"],
+      "cache": false
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "name": "@NOBLEZA/auth",
+  "type": "module",
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "default": "./src/*.ts"
+    }
+  },
+  "scripts": {},
+  "dependencies": {
+    "@NOBLEZA/db": "workspace:*",
+    "@NOBLEZA/env": "workspace:*",
+    "better-auth": "catalog:",
+    "dotenv": "catalog:",
+    "nodemailer": "^7.0.10",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@NOBLEZA/config": "workspace:*",
+    "@types/nodemailer": "^7.0.3",
+    "typescript": "catalog:"
+  }
+}
