@@ -91,6 +91,17 @@ export const roomsRouter = router({
   delete: adminProcedure
     .input(z.object({ id: z.number().int() }))
     .mutation(async ({ ctx, input }) => {
+      const room = await ctx.db.room.findUnique({
+        where: { id: input.id },
+        include: { _count: { select: { bookings: true } } },
+      });
+      if (!room) throw new TRPCError({ code: "NOT_FOUND", message: "Room not found." });
+      if (room._count.bookings > 0) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Cannot delete a room that still has bookings.",
+        });
+      }
       await ctx.db.room.delete({ where: { id: input.id } });
       return { ok: true };
     }),

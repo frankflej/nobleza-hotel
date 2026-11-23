@@ -18,7 +18,9 @@
     "db:seed": "turbo -F @NOBLEZA/db db:seed",
     "db:studio": "turbo -F @NOBLEZA/db db:studio",
     "db:migrate": "turbo -F @NOBLEZA/db db:migrate",
-    "test:iot": "node scripts/test-iot-occupancy.mjs"
+    "test:iot": "node scripts/test-iot-occupancy.mjs",
+    "sim:iot": "node scripts/iot-simulator.mjs",
+    "test:admin-iot": "node scripts/test-admin-iot.mjs"
   },
   "devDependencies": {
     "@NOBLEZA/config": "workspace:*",
