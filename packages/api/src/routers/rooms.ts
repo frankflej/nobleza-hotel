@@ -13,6 +13,18 @@ import {
 const roomType = z.enum(["Standard", "Deluxe", "Suite", "Presidential"]);
 const roomStatus = z.enum(["Available", "Occupied", "Dirty", "Cleaning", "Maintenance"]);
 
+/** Fields safe to show on the public site. */
+export const publicRoomSelect = {
+  id: true,
+  roomNumber: true,
+  type: true,
+  price: true,
+  capacity: true,
+  description: true,
+  amenities: true,
+  imageUrl: true,
+} as const;
+
 export const roomsRouter = router({
   search: publicProcedure
     .input(
@@ -32,22 +44,28 @@ export const roomsRouter = router({
           message: "Check-in and check-out dates are required.",
         });
       }
-      const booked = await ctx.db.booking.findMany({
-        where: {
-          status: { in: ["Booked", "CheckedIn"] },
-          AND: [{ checkInDate: { lt: checkOut } }, { checkOutDate: { gt: checkIn } }],
-        },
-        select: { roomId: true },
-      });
-      const excluded = booked.map((b) => b.roomId);
+      if (checkOut <= checkIn) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Check-out must be after check-in.",
+        });
+      }
+      // One round trip: exclude rooms with an overlapping active booking via a relation filter.
       return ctx.db.room.findMany({
         where: {
-          id: { notIn: excluded },
           status: { in: ["Available", "Dirty", "Cleaning"] },
           ...(input.capacity ? { capacity: { gte: input.capacity } } : {}),
           ...(input.type ? { type: input.type } : {}),
+          bookings: {
+            none: {
+              status: { in: ["Booked", "CheckedIn"] },
+              checkInDate: { lt: checkOut },
+              checkOutDate: { gt: checkIn },
+            },
+          },
         },
-        orderBy: { price: "asc" },
+        select: publicRoomSelect,
+        orderBy: [{ price: "asc" }, { roomNumber: "asc" }],
       });
     }),
 
