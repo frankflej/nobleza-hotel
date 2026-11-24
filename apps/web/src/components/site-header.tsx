@@ -18,19 +18,19 @@ export function SiteHeader({ variant = "marketing" }: { variant?: "marketing" | 
 
   return (
     <header className="flex items-center justify-between border-b border-hotel-gold-light bg-hotel-blue px-6 py-4 text-hotel-cream">
-      <Link href="/" className="font-serif text-xl tracking-wide text-hotel-gold">
+      <Link href="/" className="whitespace-nowrap font-serif text-xl tracking-wide text-hotel-gold">
         Nobleza Hotel
       </Link>
-      <nav className="flex items-center gap-4 text-sm">
+      <nav className="flex items-center gap-3 text-sm sm:gap-4">
         {variant === "marketing" && (
           <>
             <a href="#rooms" className="hover:text-hotel-gold">
               Rooms
             </a>
-            <a href="#about" className="hover:text-hotel-gold">
+            <a href="#about" className="hidden hover:text-hotel-gold sm:inline">
               About
             </a>
-            <a href="#contact" className="hover:text-hotel-gold">
+            <a href="#contact" className="hidden hover:text-hotel-gold sm:inline">
               Contact
             </a>
           </>
@@ -47,7 +47,7 @@ export function SiteHeader({ variant = "marketing" }: { variant?: "marketing" | 
           </>
         ) : (
           <>
-            <Link href="/login" className="hover:text-hotel-gold">
+            <Link href="/login" className="whitespace-nowrap hover:text-hotel-gold">
               Sign in
             </Link>
             <Link href="/register" className="rounded border border-hotel-gold px-3 py-1 text-hotel-gold hover:bg-hotel-gold hover:text-hotel-blue-dark">

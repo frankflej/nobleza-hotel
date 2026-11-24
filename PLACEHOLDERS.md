@@ -9,8 +9,8 @@ The app is branded **Nobleza Hotel**. Anything hotel-specific below is temporary
 - Phone, reservations email, general email, and website domain
 - Social links, if any
 - Logo and favicon (the “N” mark is a stand-in)
-- Hero photograph (`apps/web/src/assets/hero.png` is a placeholder)
-- Footer and welcome copy on the landing page
+- Hero photograph (`apps/web/src/assets/hero.jpg` is an Unsplash stock photo)
+- Landing page address, phone and email are realistic samples for the demo (Rubavu, Rwanda), not real contact details
 
 ## Rooms and rates
 
