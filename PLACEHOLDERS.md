@@ -10,7 +10,7 @@ The app is branded **Nobleza Hotel**. Anything hotel-specific below is temporary
 - Social links, if any
 - Logo and favicon (the “N” mark is a stand-in)
 - Hero photograph (`apps/web/src/assets/hero.jpg` is an Unsplash stock photo)
-- Landing page address, phone and email are realistic samples for the demo (Rubavu, Rwanda), not real contact details
+- Landing page address, phone and email are realistic samples for the demo (Kicukiro, Rwanda), not real contact details
 
 ## Rooms and rates
 
@@ -25,15 +25,15 @@ The seed creates **79 placeholder rooms** (40 Standard at $95, 30 Deluxe at $150
 
 All use the password `password123`. Change these and use a real email domain:
 
-| Email | Role |
-| --- | --- |
-| admin@nobleza.hotel | admin |
-| manager@nobleza.hotel | manager |
+| Email                      | Role         |
+| -------------------------- | ------------ |
+| admin@nobleza.hotel        | admin        |
+| manager@nobleza.hotel      | manager      |
 | receptionist@nobleza.hotel | receptionist |
 | housekeeping@nobleza.hotel | housekeeping |
-| guest@nobleza.hotel | guest |
-| david.guest@nobleza.hotel | guest |
-| sarah.guest@nobleza.hotel | guest |
+| guest@nobleza.hotel        | guest        |
+| david.guest@nobleza.hotel  | guest        |
+| sarah.guest@nobleza.hotel  | guest        |
 
 ## Secrets and production env (never commit these)
 
@@ -51,8 +51,6 @@ For the ESP32, copy `IoT_ESP32/ESP32_Occupancy/secrets.h.example` to `secrets.h`
 ## Payments
 
 There is no live payment gateway. Folios are recorded as Card, Cash, Mobile Money, or Bank Transfer. Say if you want a processor later.
-
-
 
 ## Vercel project (you create this)
 
