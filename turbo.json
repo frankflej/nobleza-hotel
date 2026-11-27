@@ -54,6 +54,13 @@
     "db:migrate": {
       "cache": false
     },
+    "@NOBLEZA/db#build": {
+      "cache": false,
+      "outputs": [],
+      "env": [
+        "DATABASE_URL"
+      ]
+    },
     "start": {
       "dependsOn": [
         "build"
