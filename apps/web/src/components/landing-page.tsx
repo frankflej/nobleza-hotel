@@ -117,7 +117,7 @@ export function LandingPage({ initialRooms }: { initialRooms: Room[] }) {
         <div className="animate-fade-up">
           <p className="text-sm uppercase tracking-[0.3em] text-hotel-gold">A stay of quiet luxury</p>
           <h1 className="mt-4 font-serif text-5xl text-hotel-gold drop-shadow md:text-7xl">Nobleza Hotel</h1>
-          <p className="mx-auto mt-5 max-w-xl text-lg text-hotel-cream/90">On the shores of Lake Kivu, Kicukiro.</p>
+          <p className="mx-auto mt-5 max-w-xl text-lg text-hotel-cream/90">In the heart of Kicukiro, Rwanda.</p>
           <a
             href="#rooms"
             className="mt-10 inline-block rounded bg-hotel-gold px-8 py-3 text-sm uppercase tracking-[0.2em] text-hotel-blue-dark shadow-gold transition hover:bg-hotel-gold-hover"
@@ -247,7 +247,7 @@ export function LandingPage({ initialRooms }: { initialRooms: Room[] }) {
         <div className="mx-auto max-w-6xl">
           <h2 className="font-serif text-3xl">About the hotel</h2>
           <p className="mt-4 max-w-3xl text-hotel-blue/80">
-            Calm rooms, lake views and attentive service in Kicukiro, a short walk from the Lake Kivu waterfront.
+            Calm rooms, city views and attentive service in Kicukiro, Rwanda.
           </p>
         </div>
       </section>
